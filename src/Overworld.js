@@ -13,9 +13,20 @@ class Overworld extends Phaser.Scene {
             frameWidth: 16,
             frameHeight: 16
         })
+
+        this.load.image('tilesetImage', 'tileset.png')
+        this.load.tilemapTiledJSON('tilemapJSON', 'overworld.json') // export from tiled and rename to .JSON
     }
 
     create() {
+        // space for tilemap
+        const map = this.add.tilemap('tilemapJSON')
+        const tileset = map.addTilesetImage('tileset', 'tilesetImage')
+        const bgLayer =  map.createLayer('background', tileset, 0, 0) // same layer naming as tiled!
+        const terrainLayer =  map.createLayer('terrain', tileset, 0, 0)
+        const treeLayer =  map.createLayer('trees', tileset, 0, 0)
+        const extrasLayer =  map.createLayer('extras', tileset, 0, 0)
+
         // add slime
         this.slime = this.physics.add.sprite(32, 32, 'slime', 0)
         this.slime.body.setCollideWorldBounds(true)
