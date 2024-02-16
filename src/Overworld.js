@@ -32,6 +32,21 @@ class Overworld extends Phaser.Scene {
         this.slime.body.setCollideWorldBounds(true)
 
         // slime animation
+        this.anims.create({
+            key: 'jiggle',
+            frameRate: 8,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('slime', {
+                start: 0,
+                end: 1,
+            }),
+        })
+        this.slime.play('jiggle') // there's no other animations to play
+
+        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
+        this.cameras.main.startFollow(this.slime, true, 0.25, 0.25)
+
+        this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
 
         // input
         this.cursors = this.input.keyboard.createCursorKeys()
