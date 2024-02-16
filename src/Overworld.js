@@ -24,15 +24,21 @@ class Overworld extends Phaser.Scene {
         const tileset = map.addTilesetImage('tileset', 'tilesetImage')
         const bgLayer =  map.createLayer('background', tileset, 0, 0) // same layer naming as tiled!
         const terrainLayer =  map.createLayer('terrain', tileset, 0, 0)
-        const treeLayer =  map.createLayer('trees', tileset, 0, 0)
+        const treeLayer =  map.createLayer('trees', tileset, 0, 0).setDepth(5) // to walk behind the trees
         const extrasLayer =  map.createLayer('extras', tileset, 0, 0)
 
         // collidability on tilemap
         terrainLayer.setCollisionByProperty({ collides: true }) // just the information NOT the physics collider
         treeLayer.setCollisionByProperty({ collides: true })
 
+        // spawn location
+        // obj => obj.name -- we are iterating through the objects, and there is only one
+        const slimeSpawn = map.findObject('spawns', obj => obj.name === 'slimeSpawn') // same layer and object naming as tiled!
+        // console.log(slimeSpawn)
+        // ^^ just returns an object with some properties
+
         // add slime
-        this.slime = this.physics.add.sprite(32, 32, 'slime', 0)
+        this.slime = this.physics.add.sprite(slimeSpawn.x, slimeSpawn.y, 'slime', 0) // replace the spawn info with what we got from the map
         this.slime.body.setCollideWorldBounds(true)
 
         // slime animation
